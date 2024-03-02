@@ -37,6 +37,12 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'api',
+    # Third party apps
+    'rest_framework',
+    'rest_framework.authtoken',
+    'corsheaders',
+    'rest_framework_swagger',
+    'drf_yasg',
 ]
 
 MIDDLEWARE = [
@@ -66,6 +72,20 @@ TEMPLATES = [
         },
     },
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticatedOrReadOnly',
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly',
+
+    ],
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        #Rest Framework Authentication Classes
+        'rest_framework.authentication.TokenAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
+    ]
+}
 
 WSGI_APPLICATION = 'Story.wsgi.application'
 
