@@ -1,0 +1,27 @@
+###
+POST http://127.0.0.1:8080/api/register/
+Content-Type: application/json
+
+{
+    "username": "eniola12", "password": "Good!@#$%^&*Pass123", "password2": "Good!@#$%^&*Pass123","email": "eniola@gmail.com", "first_name": "zaria", "last_name": "chuks"
+}
+
+###
+POST http://127.0.0.1:8000/api/v1/auth/login/
+Content-Type: application/json
+
+{
+    "username": "chuk", "password": "Good!@#$%^&*Pass123"
+}
+
+###
+DELETE http://127.0.0.1:8000/api/v1/profile/1
+Content-Type: application/json
+Authorization: Token 8a0f819149be45219d43be8ad502806b3a36aa16
+
+
+id 4
+
+Content-Type: application/json
+Authorization: Token 8a0f819149be45219d43be8ad502806b3a36aa16
+
