@@ -14,3 +14,32 @@ class IsUserProfileOwnerOrReadOnly(permissions.BasePermission):
             return request.user.profile == obj
         return False
     
+
+class IsBookOwnerOrReadOnly(permissions.BasePermission):
+    '''
+    Custom permissions for BookViewset to only allow user to edit their own books. Otherwise, Get and Post only
+    '''
+    def has_permission(self, request, view):
+        return True
+    
+    def has_object_permission(self, request, view, obj):
+        if request.method in permissions.SAFE_METHODS:
+            return True
+        if not request.user.is_anonymous:
+            return request.user.profile == obj.user
+        return False
+    
+
+
+
+class IsOwnerOrReadOnly(permissions.BasePermission):
+    """
+    Custom Permissions to allow owner of an object to edit
+    """
+     
+    def has_object_permission(self, request, view, obj):
+        if request.method in permissions.SAFE_METHODS:
+            return True
+        # Write permission is only allowed to the owner of an object
+        return obj.user == request.user
+

@@ -39,3 +39,14 @@ cd <repo name>
 * http://127.0.0.1:8000/api/v1/profile/<int:pk> [DELETE] (proctected)[require token]
 
 * http://127.0.0.0.1:8000/api/v1/logout [GET] (proctected)[require token] [for logout]
+
+# API Endpoints for books
+* http://127.0.0.1:8000/api/v1/books [GET] (returns list of all books) (proctected)[require token]
+
+* http://127.0.0.1:8000/api/v1/books [POST] (proctected)[require token] [for creating a book]
+
+* http://127.0.0.1:8000/api/v1/books/<int:pk> [GET] (returns a single book) (proctected)[require token]
+
+* http://127.0.0.1:8000/api/v1/books/<int:pk> [PUT] (proctected)[require token] [for updating a book]
+
+* http://127.0.0.1:8000/api/v1/books/<int:pk> [DELETE] (proctected)[require token] [for deleting a book]

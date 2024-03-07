@@ -42,14 +42,8 @@ class ProfileImagePathGenerator(object):
         return os.path.join(path, name)
 
 
-class Category(models.Model):
-    name = models.CharField(max_length=100)
-
-    def __str__(self):
-        return self.name
 
 
-bookAudioPath = FileGeneratorPath
 
 
 class Profile(models.Model):
@@ -66,14 +60,27 @@ class Profile(models.Model):
 
     def __str__(self):
         return self.name
+    
 
 class Book(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='books', default=1)
     title = models.CharField(max_length=200)
     author = models.CharField(max_length=100)
     description = models.TextField()
-    content = models.FileField(upload_to=bookAudioPath)
-    audio_file = models.FileField(upload_to=bookAudioPath, blank=True, null=True)
-    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    content = models.FileField(upload_to=FileGeneratorPath(), blank=True, null=True)
+    audio = models.FileField(upload_to=FileGeneratorPath(), blank=True, null=True)
+    category = models.CharField(max_length=100)
+    book_cover_image = models.ImageField(upload_to=FileGeneratorPath(), blank=True, null=True)
+    created_at = models.DateTimeField(auto_now=True)
+    
 
     def __str__(self):
         return self.title
+    
+
+class Category(models.Model):
+    name = models.CharField(max_length=100)
+    books = models.ManyToManyField(Book, related_name='categories')
+
+    def __str__(self):
+        return self.name

@@ -79,20 +79,15 @@ class UserProfileSerializer(serializers.ModelSerializer):
         user.save()
         return instance
     
-    
-    
-
-    
-class CategorySerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Category
-        fields = ['id', 'name']
-
 
 class BookSerializer(serializers.ModelSerializer):
+    user = serializers.ReadOnlyField(source='user.username')
+    created_at = serializers.ReadOnlyField()
+
     class Meta:
         model = Book
-        fields = ['id', 'title', 'author', 'category', 'image', 'audio', 'content', 'created_at', 'updated_at']
-
-
-
+        fields = ['id', 'user', 'title', 'author', 'category', 'description', 'book_cover_image', 'audio', 'content', 'created_at']
+        read_only_fields = ['created_at']
+      
+    def create(self, validated_data):
+        return Book.objects.create(**validated_data)

@@ -1,13 +1,12 @@
 from django.shortcuts import render
 from rest_framework import generics, status
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated
-from .permissions import IsUserProfileOwnerOrReadOnly
-from .models import Profile
-from .serializers import UserProfileSerializer, RegisterSerializer
+from .permissions import IsUserProfileOwnerOrReadOnly, IsOwnerOrReadOnly
+from .models import Profile, Book, Category
+from .serializers import UserProfileSerializer, RegisterSerializer, BookSerializer
 from drf_yasg.utils import swagger_auto_schema
 
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.views import APIView
 
@@ -86,3 +85,29 @@ class LogoutView(APIView):
         request.user.auth_token.delete()
         return Response({"message": "Successfully logged out."})
 
+
+
+# Views for Books
+class BookList(generics.ListCreateAPIView):
+    """
+    Retrieve a list of all books or create a new book.
+    """
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
+    permission_classes = [IsAuthenticated]
+
+    def perform_create(self, serializer):
+        # Associate the book with the currently authenticated user
+        serializer.save(user=self.request.user)
+
+    def get_queryset(self):
+        # Retrieve only the books associated with the currently authenticated user
+        return Book.objects.filter(user=self.request.user)
+
+class BookDetail(generics.RetrieveUpdateDestroyAPIView):
+    """
+    Retrieve, update or delete a book instance.
+    """
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
+    permission_classes = [IsAuthenticated, IsOwnerOrReadOnly]
